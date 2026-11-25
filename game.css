@@ -392,15 +392,19 @@ h1 span { color: var(--rust); }
   filter: blur(.45cqh);
   pointer-events: none;
 }
+.cat-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+}
 .cat {
   position: absolute;
-  z-index: 7;
   left: var(--cat-perch, 79%);
   top: 92.3%;
   width: var(--cat-size);
   aspect-ratio: 1;
   transform: translate(-50%, -100%);
-  pointer-events: none;
 }
 .cat-pose {
   position: absolute;
