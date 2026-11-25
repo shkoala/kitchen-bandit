@@ -3,6 +3,7 @@
 const byId = id => document.getElementById(id);
 const scene = byId('scene');
 const fridge = byId('fridge');
+const doorFrame = byId('door-frame');
 const door = byId('door');
 const shelves = byId('shelves');
 const cat = byId('cat');
@@ -347,7 +348,7 @@ async function enterFridge() {
 
 async function rattleFridge() {
   playSound('rattle');
-  await fridge.animate([
+  const frames = [
     { transform: 'translateX(0) rotate(0deg)' },
     { transform: 'translateX(-5px) rotate(-2deg)', offset: .13 },
     { transform: 'translateX(7px) rotate(2.8deg)', offset: .26 },
@@ -356,7 +357,9 @@ async function rattleFridge() {
     { transform: 'translateX(-4px) rotate(-1.4deg)', offset: .68 },
     { transform: 'translateX(3px) rotate(.9deg)', offset: .82 },
     { transform: 'translateX(0) rotate(0deg)' },
-  ], { duration: 600, easing: 'ease-in-out' }).finished;
+  ];
+  const timing = { duration: 600, easing: 'ease-in-out' };
+  await Promise.all([fridge, doorFrame].map(part => part.animate(frames, timing).finished));
 }
 
 function escapeLaunchX() {

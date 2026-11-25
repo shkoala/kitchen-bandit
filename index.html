@@ -87,14 +87,10 @@
           <div class="progress-track" id="progress-track" aria-hidden="true"></div>
         </div>
 
-        <div class="fridge" id="fridge">
+        <div class="fridge-frame fridge" id="fridge">
           <img class="cabinet" src="./assets/fridge.webp" alt="" draggable="false">
           <div class="fridge-light" aria-hidden="true"></div>
           <div class="shelves" id="shelves" role="group" aria-label="Food in the fridge"></div>
-          <div class="door" id="door" data-position="open" aria-hidden="true">
-            <img class="door-side door-front" src="./assets/door-front.webp" alt="" draggable="false">
-            <img class="door-side door-back" src="./assets/door-back.webp" alt="" draggable="false">
-          </div>
         </div>
 
         <div class="shadow" id="cat-shadow" aria-hidden="true"></div>
@@ -106,6 +102,12 @@
           <img class="cat-pose" data-frame="tuck" src="./assets/cat-tuck.webp" alt="" draggable="false">
           <img class="cat-pose" data-frame="reach" src="./assets/cat-reach.webp" alt="" draggable="false">
           <img class="carried-food" id="carried-food" alt="" draggable="false" hidden>
+        </div>
+        <div class="fridge-frame door-frame" id="door-frame" aria-hidden="true">
+          <div class="door" id="door" data-position="open">
+            <img class="door-side door-front" src="./assets/door-front.webp" alt="" draggable="false">
+            <img class="door-side door-back" src="./assets/door-back.webp" alt="" draggable="false">
+          </div>
         </div>
         <div class="effects" id="effects" aria-hidden="true"></div>
       </div>
