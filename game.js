@@ -5,7 +5,6 @@ const scene = byId('scene');
 const fridge = byId('fridge');
 const door = byId('door');
 const shelves = byId('shelves');
-const catLayer = byId('cat-layer');
 const cat = byId('cat');
 const shadow = byId('cat-shadow');
 const carriedFood = byId('carried-food');
@@ -360,17 +359,10 @@ async function rattleFridge() {
   ], { duration: 600, easing: 'ease-in-out' }).finished;
 }
 
-function prepareEscape(item) {
-  const sceneBounds = scene.getBoundingClientRect();
-  const edge = (fridge.getBoundingClientRect().right - sceneBounds.left) / sceneBounds.width * 100;
-  const catWidth = cat.getBoundingClientRect().width / sceneBounds.width * 100;
-  // The cabinet hides the cat and its food until they pass the right edge.
-  catLayer.style.clipPath = `inset(0 0 0 ${edge}%)`;
-  carriedFood.src = asset(item);
-  carriedFood.hidden = false;
-  cat.dataset.direction = 'right';
-  showPose('stretch');
-  return { edge, catWidth };
+function escapeLaunchX() {
+  const stage = scene.getBoundingClientRect();
+  const cabinet = fridge.getBoundingClientRect();
+  return (cabinet.left + cabinet.width * .63 - stage.left) / stage.width * 100;
 }
 
 async function runAway(item) {
@@ -378,23 +370,25 @@ async function runAway(item) {
   playSound('creak');
   await sleep(176);
 
-  const { edge, catWidth } = prepareEscape(item);
-  const spaceToRun = 100 - edge;
+  const launchX = escapeLaunchX();
+  carriedFood.src = asset(item);
+  carriedFood.hidden = false;
+  cat.dataset.direction = 'right';
+  showPose('stretch');
   playSound('scamper');
   const closeAfterEscape = sleep(595).then(() => {
     door.dataset.position = 'closed';
   });
-  const kickUpDust = sleep(375).then(() => dust(edge + spaceToRun * .23, 90));
+  const kickUpDust = sleep(375).then(() => dust(69, 90));
 
   await Promise.all([
     moveCat([
-      { x: edge - catWidth * .72, y: 77, shadow: 0 },
-      { x: edge - catWidth * .20, y: 75.5, shadow: .18, offset: .19 },
-      { x: edge + spaceToRun * .11, y: 83, shadow: .42, offset: .34 },
-      { x: edge + spaceToRun * .28, y: 92, shadow: 1, offset: .48 },
-      { x: edge + spaceToRun * .54, y: 88.5, shadow: .7, offset: .63 },
-      { x: edge + spaceToRun * .80, y: 92.4, shadow: 1, offset: .81 },
-      { x: 100 + catWidth * .64, y: 89, opacity: 0, shadow: 0 },
+      { x: launchX, y: 68, opacity: .05, shadow: 0 },
+      { x: launchX + 7, y: 78, opacity: 1, shadow: .3, offset: .24 },
+      { x: 72, y: 92, shadow: 1, offset: .41 },
+      { x: 82, y: 88.5, shadow: .7, offset: .59 },
+      { x: 93, y: 92.4, shadow: 1, offset: .77 },
+      { x: 113, y: 89, opacity: 0, shadow: 0 },
     ], 1030, 'cubic-bezier(.34,.52,.52,1)'),
     posesDuring([[210, 'tuck'], [333, 'reach'], [451, 'stretch'], [556, 'tuck'], [660, 'reach'], [772, 'stretch'], [890, 'tuck']]),
     closeAfterEscape,
@@ -414,8 +408,11 @@ async function reducedTheft(item) {
   playSound('thump');
   await sleep(340);
   door.dataset.position = 'ajar';
-  const { edge, catWidth } = prepareEscape(item);
-  placeCat({ x: edge - catWidth * .16, y: 92 });
+  cat.dataset.direction = 'right';
+  showPose('stretch');
+  carriedFood.src = asset(item);
+  carriedFood.hidden = false;
+  placeCat({ x: escapeLaunchX() + 10, y: 92 });
   await sleep(870);
   placeCat({ x: 111, opacity: 0 });
   carriedFood.hidden = true;
@@ -440,7 +437,6 @@ async function steal() {
     }
   } finally {
     placeCat({ x: 113, opacity: 0 });
-    catLayer.style.removeProperty('clip-path');
     carriedFood.hidden = true;
     door.dataset.position = 'closed';
     coverFridge(true);
