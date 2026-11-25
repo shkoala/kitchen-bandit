@@ -21,6 +21,7 @@ const sound = byId('sound');
 const full = byId('fullscreen');
 const modeButtons = [...document.querySelectorAll('.mode')];
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+const hoverPreference = matchMedia('(any-hover: hover)');
 const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 const asset = item => './assets/food-' + item.id + '.webp';
@@ -30,6 +31,7 @@ const shelfX = [18, 39.3, 60.7, 82];
 const shelfY = [38.4, 61.8, 85.5];
 let mode = 'grammar';
 let busy = true;
+let labelledSlot = null;
 
 function newRound(items) {
   const deck = [...items];
@@ -51,8 +53,28 @@ function setIcon(element, name) {
   element.setAttribute('href', '#i-' + name);
 }
 
+function showFoodLabel(slot = null) {
+  if (slot && (shelves.inert || slot.disabled)) return;
+  labelledSlot?.classList.remove('show-label');
+  labelledSlot = slot;
+  if (!slot) return;
+
+  const image = slot.firstElementChild;
+  if (image.naturalWidth) {
+    const fittedHeight = Math.min(image.clientHeight, image.clientWidth * image.naturalHeight / image.naturalWidth);
+    slot.style.setProperty('--food-art-height', 100 * fittedHeight / slot.clientHeight + '%');
+  }
+  slot.classList.add('show-label');
+}
+
+function updateShelfInteraction() {
+  shelves.inert = busy || shelves.getAttribute('aria-hidden') === 'true';
+  if (shelves.inert) showFoodLabel();
+}
+
 function setBusy(value) {
   busy = value;
+  updateShelfInteraction();
   for (const control of [play, reset, ...modeButtons]) {
     control.setAttribute('aria-disabled', String(value));
   }
@@ -81,8 +103,10 @@ function showProgress(round) {
 }
 
 function mountShelves() {
+  showFoodLabel();
   shelves.replaceChildren(...FOOD[mode].map((item, index) => {
-    const slot = document.createElement('div');
+    const slot = document.createElement('button');
+    slot.type = 'button';
     slot.className = 'slot';
     slot.dataset.item = item.id;
     slot.style.setProperty('--x', shelfX[index % shelfX.length] + '%');
@@ -92,7 +116,31 @@ function mountShelves() {
     image.src = asset(item);
     image.alt = item.name;
     image.draggable = false;
-    slot.append(image);
+    const label = document.createElement('span');
+    label.className = 'food-label';
+    label.setAttribute('aria-hidden', 'true');
+    label.textContent = item.name;
+    slot.append(image, label);
+
+    slot.addEventListener('pointerenter', event => {
+      if (event.pointerType !== 'touch') showFoodLabel(slot);
+    });
+    slot.addEventListener('pointerleave', event => {
+      if (event.pointerType !== 'touch' && labelledSlot === slot && !slot.matches(':focus-visible')) {
+        showFoodLabel();
+      }
+    });
+    slot.addEventListener('focus', () => {
+      if (slot.matches(':focus-visible')) showFoodLabel(slot);
+    });
+    slot.addEventListener('blur', () => {
+      if (labelledSlot === slot) showFoodLabel();
+    });
+    slot.addEventListener('click', event => {
+      const tap = event.pointerType === 'touch' || (!event.pointerType && !hoverPreference.matches);
+      if (tap || event.detail === 0) showFoodLabel(labelledSlot === slot ? null : slot);
+    });
+
     return slot;
   }));
 }
@@ -100,7 +148,9 @@ function mountShelves() {
 function showShelves(round, latest = null) {
   for (const slot of shelves.children) {
     const id = slot.dataset.item;
-    slot.firstElementChild.hidden = round.removed.has(id);
+    const removed = round.removed.has(id);
+    slot.disabled = removed;
+    slot.firstElementChild.hidden = removed;
     slot.classList.toggle('latest', id === latest);
   }
 }
@@ -108,6 +158,7 @@ function showShelves(round, latest = null) {
 function coverFridge(covered) {
   shelves.setAttribute('aria-hidden', String(covered));
   scene.dataset.covered = String(covered);
+  updateShelfInteraction();
 }
 
 function placeCat({ x, y = 92.3, opacity = 1 }) {
@@ -456,6 +507,13 @@ const sounds = {
 function playSound(name) {
   if (soundOn && audio?.state === 'running') sounds[name].forEach(tone);
 }
+
+document.addEventListener('pointerdown', event => {
+  if (labelledSlot && !shelves.contains(event.target)) showFoodLabel();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') showFoodLabel();
+});
 
 for (const button of modeButtons) {
   button.addEventListener('click', () => {

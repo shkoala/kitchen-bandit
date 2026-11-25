@@ -246,7 +246,15 @@ h1 span { color: var(--rust); }
   width: 21%;
   height: 20%;
   isolation: isolate;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  border-radius: .42rem;
+  background: transparent;
+  cursor: help;
 }
+.slot:focus-visible { outline: 2px solid #427058; outline-offset: 0; }
+.slot.show-label { z-index: 3; }
 .slot > img {
   position: absolute;
   z-index: 1;
@@ -258,6 +266,44 @@ h1 span { color: var(--rust); }
   object-fit: contain;
   object-position: bottom center;
   filter: drop-shadow(0 .15rem .12rem #4e452d48);
+}
+.food-label {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(2% + var(--food-art-height, 96%) + .3rem);
+  left: 50%;
+  translate: -50% .16rem;
+  width: max-content;
+  padding: .3rem .64rem .35rem;
+  border: 1px solid #c4d6bf;
+  border-radius: .55rem;
+  background: var(--panel);
+  box-shadow: 0 .19rem .48rem #423f302b;
+  color: var(--ink);
+  font-size: clamp(.9rem, 1.4vw, 1.08rem);
+  font-weight: 700;
+  line-height: 1.2;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease-out, translate .12s ease-out;
+}
+.food-label::after {
+  content: '';
+  position: absolute;
+  bottom: -.24rem;
+  left: calc(50% - .24rem);
+  width: .48rem;
+  height: .48rem;
+  rotate: 45deg;
+  border-right: 1px solid #c4d6bf;
+  border-bottom: 1px solid #c4d6bf;
+  background: var(--panel);
+}
+.slot.show-label > .food-label {
+  translate: -50% 0;
+  visibility: visible;
+  opacity: 1;
 }
 .slot:has(img:not([hidden]))::before {
   content: '';
