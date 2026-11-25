@@ -9,8 +9,8 @@
 
 | Режим | Что говорим |
 | --- | --- |
-| **Some, any, a, an** | *We’ve got an egg. We’ve got some cheese. We haven’t got any cheese left.* |
-| **Containers** | *A bottle of water, a packet of biscuits, a cone of ice cream.* Во втором режиме можно засчитать и *an ice cream cone*. |
+| **Some, any, a, an** | *We’ve got an egg. We’ve got some cake. We haven’t got any cake left.* |
+| **Containers** | *A bottle of water, a packet of biscuits, a cone of ice cream, a piece of cheese.* Во втором режиме можно засчитать и *an ice cream cone*. |
 
 ## Запуск
 

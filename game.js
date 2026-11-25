@@ -27,8 +27,8 @@ const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, millise
 const asset = item => './assets/food-' + item.id + '.webp';
 const phrase = item => (item.amount ?? 'a') + ' ' + item.name;
 const missingSentence = item => "We haven’t got " + (item.amount === 'some' ? 'any ' + item.name : phrase(item)) + ' left.';
-const shelfX = [18, 39.3, 60.7, 82];
 const shelfY = [38.4, 61.8, 85.5];
+const itemsPerShelf = 4;
 let mode = 'grammar';
 let busy = true;
 let labelledSlot = null;
@@ -104,13 +104,22 @@ function showProgress(round) {
 
 function mountShelves() {
   showFoodLabel();
-  shelves.replaceChildren(...FOOD[mode].map((item, index) => {
+  const items = FOOD[mode];
+  const lastShelf = shelfY.length - 1;
+  shelves.replaceChildren(...items.map((item, index) => {
+    const shelf = Math.min(Math.floor(index / itemsPerShelf), lastShelf);
+    const shelfStart = shelf * itemsPerShelf;
+    const columns = shelf === lastShelf ? items.length - shelfStart : itemsPerShelf;
+    const column = index - shelfStart;
+    const centre = 7.3 + (column + 0.5) * 85.4 / columns;
+
     const slot = document.createElement('button');
     slot.type = 'button';
     slot.className = 'slot';
     slot.dataset.item = item.id;
-    slot.style.setProperty('--x', shelfX[index % shelfX.length] + '%');
-    slot.style.setProperty('--y', shelfY[Math.floor(index / shelfX.length)] + '%');
+    slot.style.setProperty('--x', centre + '%');
+    slot.style.setProperty('--y', shelfY[shelf] + '%');
+    slot.style.setProperty('--slot-width', 84 / columns + '%');
     slot.style.setProperty('--size', item.width + '%');
     const image = new Image();
     image.src = asset(item);

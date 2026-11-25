@@ -243,7 +243,7 @@ h1 span { color: var(--rust); }
   translate: -50% -100%;
   display: grid;
   place-items: end center;
-  width: 21%;
+  width: var(--slot-width);
   height: 20%;
   isolation: isolate;
   appearance: none;

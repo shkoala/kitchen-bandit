@@ -7,7 +7,7 @@ const FOOD = {
     { id: 'egg', name: 'egg', amount: 'an', width: 58 },
     { id: 'cheese', name: 'cheese', amount: 'some', width: 90 },
     { id: 'orange', name: 'orange', amount: 'an', width: 72 },
-    { id: 'cake', name: 'slice of cake', amount: 'a', width: 88 },
+    { id: 'cake', name: 'cake', amount: 'some', width: 88 },
     { id: 'banana', name: 'banana', amount: 'a', width: 86 },
     { id: 'apple', name: 'apple', amount: 'an', width: 73 },
     { id: 'sausages', name: 'sausages', amount: 'some', width: 92 },
@@ -28,6 +28,7 @@ const FOOD = {
     { id: 'jam', name: 'jar of jam', width: 69 },
     { id: 'pizza', name: 'slice of pizza', width: 93 },
     { id: 'chocolate', name: 'bar of chocolate', width: 82 },
-    { id: 'tea', name: 'cup of tea', width: 94 }
+    { id: 'tea', name: 'cup of tea', width: 94 },
+    { id: 'cheese', name: 'piece of cheese', width: 94 }
   ]
 };
