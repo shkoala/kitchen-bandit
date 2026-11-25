@@ -9,12 +9,12 @@
 
 | Режим | Что говорим |
 | --- | --- |
-| **Some, any, a, an** | *We’ve got an egg. We’ve got some cake. We haven’t got any cake left.* |
+| **Some, any, a, an** | *We’ve got an egg. We’ve got some cake. We haven’t got any cake.* |
 | **Containers** | *A bottle of water, a packet of biscuits, a cone of ice cream, a piece of cheese.* Во втором режиме можно засчитать и *an ice cream cone*. |
 
 ## Запуск
 
-Распакуйте архив и откройте `index.html` в браузере. Игра работает и без интернета. Звук можно включить на верхней панели.
+Распакуйте архив и откройте `index.html` в браузере. Игра работает и без интернета. Музыку и звуки игры можно включать отдельно на верхней панели.
 
 Для GitHub Pages загрузите в корень репозитория все файлы и папки из архива. В настройках Pages в качестве источника выберите **Deploy from a branch**, ветку **main** и папку **/ (root)**. [Справка GitHub](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 

@@ -23,6 +23,8 @@
     </symbol>
     <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4zM15 9a4.4 4.4 0 0 1 0 6m2.8-9a8.8 8.8 0 0 1 0 12"/></symbol>
     <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4zM16 10l5 5m0-5-5 5"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l11-2v12M9 9l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2.2"/><ellipse cx="17" cy="16" rx="3" ry="2.2"/></symbol>
+    <symbol id="i-music-off" viewBox="0 0 24 24"><path d="m3 3 18 18M9 18v-5M11.6 5.5 20 4v11"/><ellipse cx="6" cy="18" rx="3" ry="2.2"/><path d="M15 15a3.6 3.6 0 0 0-1 1.8c0 1.2 1.3 2.2 3 2.2.7 0 1.3-.2 1.8-.5"/></symbol>
     <symbol id="i-full" viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></symbol>
     <symbol id="i-exit" viewBox="0 0 24 24"><path d="M4 8h4V4m8 0v4h4M4 16h4v4m8 0v-4h4"/></symbol>
     <symbol id="i-refill" viewBox="0 0 24 24"><path d="M20 10a8 8 0 1 0-1.4 6.35M20 4v6h-6"/></symbol>
@@ -35,9 +37,9 @@
   <main class="game">
     <header class="topbar">
       <div class="identity">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 28 28"><use href="#i-paw"></use></svg>
-        </span>
+        <a class="brand-mark" href="https://vk.ru/abc_shkoala" target="_blank" rel="noopener noreferrer" lang="ru" aria-label="ШКОАЛА · ВКонтакте">
+          <img src="./assets/shkoala-logo.png" width="1125" height="383" alt="ШКОАЛА">
+        </a>
         <div>
           <h1>The Fridge <span>Bandit</span></h1>
           <p>What’s missing from the fridge?</p>
@@ -54,8 +56,11 @@
         </button>
       </div>
       <div class="utilities" role="group" aria-label="Game controls">
-        <button class="tool" id="sound" type="button" aria-label="Sound" aria-pressed="false" title="Turn sound on">
+        <button class="tool" id="sound" type="button" aria-label="Sound effects" aria-pressed="false" title="Turn sound effects on">
           <svg class="icon" aria-hidden="true"><use href="#i-mute"></use></svg>
+        </button>
+        <button class="tool" id="music" type="button" aria-label="Background music" aria-pressed="false" title="Turn music on">
+          <svg class="icon" aria-hidden="true"><use href="#i-music-off"></use></svg>
         </button>
         <button class="tool" id="reset" type="button" aria-label="Refill the fridge" title="Refill the fridge">
           <svg class="icon" aria-hidden="true"><use href="#i-refill"></use></svg>
@@ -119,6 +124,10 @@
         </button>
       </div>
     </section>
+    <footer class="game-footer">
+      <a class="more-games" href="https://vk.ru/abc_shkoala?w=donut_payment-190039625&amp;levelId=3559" target="_blank" rel="noopener noreferrer">More games</a>
+    </footer>
+    <audio id="music-track" src="./assets/fridge-music.mp3" preload="none" loop></audio>
     <noscript>This game needs JavaScript to play.</noscript>
   </main>
 </body>

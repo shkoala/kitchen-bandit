@@ -18,6 +18,8 @@ const progressTrack = byId('progress-track');
 const play = byId('play');
 const reset = byId('reset');
 const sound = byId('sound');
+const musicButton = byId('music');
+const music = byId('music-track');
 const full = byId('fullscreen');
 const modeButtons = [...document.querySelectorAll('.mode')];
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -26,7 +28,7 @@ const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, millise
 
 const asset = item => './assets/food-' + item.id + '.webp';
 const phrase = item => (item.amount ?? 'a') + ' ' + item.name;
-const missingSentence = item => "We haven’t got " + (item.amount === 'some' ? 'any ' + item.name : phrase(item)) + ' left.';
+const missingSentence = item => "We haven’t got " + (item.amount === 'some' ? 'any ' + item.name : phrase(item)) + '.';
 const shelfY = [38.4, 61.8, 85.5];
 const itemsPerShelf = 4;
 let mode = 'grammar';
@@ -471,8 +473,15 @@ let audio = null;
 
 function updateSoundControl() {
   sound.setAttribute('aria-pressed', String(soundOn));
-  sound.title = soundOn ? 'Turn sound off' : 'Turn sound on';
+  sound.title = soundOn ? 'Turn sound effects off' : 'Turn sound effects on';
   setIcon(sound.querySelector('use'), soundOn ? 'sound' : 'mute');
+}
+
+function updateMusicControl() {
+  const playing = !music.paused;
+  musicButton.setAttribute('aria-pressed', String(playing));
+  musicButton.title = playing ? 'Turn music off' : 'Turn music on';
+  setIcon(musicButton.querySelector('use'), playing ? 'music' : 'music-off');
 }
 
 function prepareAudio() {
@@ -566,6 +575,13 @@ sound.addEventListener('click', async () => {
     audio.suspend().catch(() => {});
   }
 });
+
+musicButton.addEventListener('click', () => {
+  if (music.paused) music.play().catch(updateMusicControl);
+  else music.pause();
+});
+music.addEventListener('play', updateMusicControl);
+music.addEventListener('pause', updateMusicControl);
 
 if (!document.fullscreenEnabled) full.hidden = true;
 full.addEventListener('click', async () => {

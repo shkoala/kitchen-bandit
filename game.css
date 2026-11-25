@@ -54,7 +54,9 @@ button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-button:focus-visible { outline: 3px solid #a7462e; outline-offset: 4px; }
+button:focus-visible,
+.brand-mark:focus-visible,
+.more-games:focus-visible { outline: 3px solid #a7462e; outline-offset: 4px; }
 button[aria-disabled='true'], button:disabled { cursor: default; }
 [hidden] { display: none !important; }
 .icon-library { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -68,7 +70,7 @@ button[aria-disabled='true'], button:disabled { cursor: default; }
 }
 .topbar {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: clamp(1rem, 2.2vw, 2rem);
   margin-bottom: 1.28rem;
@@ -78,15 +80,12 @@ button[aria-disabled='true'], button:disabled { cursor: default; }
   display: grid;
   place-items: center;
   flex: none;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 42% 49% 43% 50%;
-  color: #285b48;
-  background: #dcebd9;
-  border: 1px solid #c6dbca;
-  transform: rotate(-9deg);
+  width: clamp(5.7rem, 9.9vw, 8.5rem);
+  min-height: 2.45rem;
+  border-radius: .6rem;
 }
-.brand-mark svg { width: 1.7rem; height: 1.7rem; }
+.brand-mark:hover { background: #e9f2e5; }
+.brand-mark img { display: block; width: 100%; height: auto; }
 h1 {
   margin: 0;
   font: 700 clamp(1.62rem, 3.2vw, 2.8rem)/1.05 var(--display);
@@ -163,7 +162,7 @@ h1 span { color: var(--rust); }
   position: relative;
   isolation: isolate;
   container-type: size;
-  height: clamp(350px, calc(100svh - 195px), 610px);
+  height: clamp(350px, calc(100svh - 245px), 610px);
   overflow: hidden;
   background: #e8dfbf;
 }
@@ -505,42 +504,68 @@ h1 span { color: var(--rust); }
 .action:active:not([aria-disabled='true']) { translate: 0 2px; box-shadow: 0 .04rem 0 #143a2d; }
 .action[aria-disabled='true'] { background: #59766a; border-color: #59766a; box-shadow: none; color: white; }
 
+.game-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .95rem;
+}
+.more-games {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: .42rem .9rem;
+  border: 1px solid #c9dbc8;
+  border-radius: .72rem;
+  background: #edf1e4;
+  color: var(--green);
+  font-size: .88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .16s;
+}
+.more-games:hover { background: #e0eddd; }
+
 @media (max-width: 991px) {
   .game { padding-inline: 1.25rem; }
   .topbar { gap: .85rem; }
   .utilities { gap: .3rem; }
   .tool { width: 2.45rem; height: 2.45rem; }
-  .brand-mark { width: 2.55rem; height: 2.55rem; }
   .identity { gap: .62rem; }
   .mode { padding-inline: .63rem; }
-  .scene { height: clamp(350px, calc(100svh - 204px), 550px); --fridge-open: -114deg; }
+  .scene { height: clamp(350px, calc(100svh - 254px), 550px); --fridge-open: -114deg; }
   .fridge { height: 81%; }
 }
+@media (max-width: 900px) {
+  .topbar { grid-template-columns: minmax(0, 1fr) auto; }
+  .modes { grid-column: 1/-1; grid-row: 2; justify-self: start; }
+  .scene { height: clamp(325px, calc(100svh - 300px), 550px); }
+}
 @media (max-width: 730px) {
-  .topbar { grid-template-columns: 1fr auto; margin-bottom: .8rem; }
-  .modes { grid-column: 1/-1; grid-row: 2; }
+  .topbar { margin-bottom: .8rem; }
+  .modes { justify-self: stretch; }
   .mode { flex: 1; }
   .theatre { border-radius: 1.08rem; }
-  .scene { height: clamp(320px, calc(100svh - 245px), 445px); --fridge-open: -113deg; --cat-size: max(92px, 24cqh); }
+  .scene { height: clamp(320px, calc(100svh - 295px), 445px); --fridge-open: -113deg; --cat-size: max(92px, 24cqh); }
   .fridge { left: 53%; height: 74%; inset-block-end: 9%; }
   .progress { top: .7rem; left: .72rem; }
   .turn { min-height: 6rem; gap: .75rem; padding: .82rem 1rem; }
   .action { min-width: 10.4rem; padding-inline: .83rem; }
+}
+@media (max-width: 560px) {
+  .identity { flex-direction: column; align-items: flex-start; gap: .15rem; }
 }
 @media (max-width: 485px) {
   .game { padding: .8rem .68rem 1rem; }
   .topbar { gap: .6rem; }
   h1 { font-size: clamp(1.27rem, 5.5vw, 1.67rem); }
   .identity p { font-size: .73rem; }
-  .identity { gap: .43rem; }
-  .brand-mark { width: 1.9rem; height: 1.9rem; }
-  .brand-mark svg { width: 1.16rem; height: 1.16rem; }
+  .brand-mark { width: 6rem; min-height: 2.25rem; }
   .tool { width: 2.15rem; height: 2.15rem; border-radius: .65rem; }
   .tool .icon { width: 1.03rem; height: 1.03rem; }
   .modes { border-radius: .85rem; padding: .24rem; }
   .mode { font-size: .87rem; padding: .38rem .45rem; min-height: 2.23rem; border-radius: .6rem; }
   .mode .icon { width: 1rem; height: 1rem; }
-  .scene { height: clamp(305px, calc(100svh - 270px), 400px); --fridge-open: -112deg; --cat-size: max(82px, 23cqh); --cat-perch: 86%; }
+  .scene { height: clamp(305px, calc(100svh - 345px), 400px); --fridge-open: -112deg; --cat-size: max(82px, 23cqh); --cat-perch: 86%; }
   .fridge { height: min(73%, 61cqw); left: 53.5%; }
   .progress { padding: .34rem .52rem .42rem; border-radius: .65rem; }
   .progress-label { font-size: .74rem; }
@@ -555,7 +580,7 @@ h1 span { color: var(--rust); }
 @media (max-height: 520px) and (orientation: landscape) {
   .game { padding-top: .55rem; padding-bottom: .6rem; }
   .topbar { margin-bottom: .5rem; }
-  .scene { height: clamp(245px, calc(100svh - 128px), 380px); }
+  .scene { height: clamp(245px, calc(100svh - 174px), 380px); }
   .turn { min-height: 4.6rem; padding-block: .55rem; }
 }
 @media (prefers-reduced-motion: reduce) {
